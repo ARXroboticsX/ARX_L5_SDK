@@ -52,14 +52,8 @@ include
 
 
 
-
-
-
 add_executable(arm_node3 src/arx.cpp)
 add_dependencies(arm_node3 ${PROJECT_NAME}_gencfg)
-
-
-
 
 
 
@@ -67,9 +61,9 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm.*|arm|aarch64")
     # Link libraries for ARM architecture
     target_link_libraries(arm_node3 
         ${catkin_LIBRARIES} 
-         
+        arm_control 
         # ${CMAKE_CURRENT_SOURCE_DIR}/src/App/libarmkey.so 
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/arx_lib/libarxarm.so
+
         
         # kdl_parser
     )
@@ -77,8 +71,8 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "(x86_64)|(AMD64)|(^i686)")
     # Link libraries for x86 architecture
     target_link_libraries(arm_node3 
         ${catkin_LIBRARIES} 
-        
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/arx_lib/libarxx86.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/arx_lib/libarxx86.so 
+
         # kdl_parser
     )
 endif()
@@ -86,7 +80,6 @@ endif()
 install(TARGETS arm_node3
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
 
 
 install(DIRECTORY
