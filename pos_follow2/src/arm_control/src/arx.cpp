@@ -7,6 +7,7 @@
 #include "Hardware/motor.h"
 #include "Hardware/teleop.h"
 #include "App/arm_control.h"
+// #include "App/arm_control.cpp"
 #include "App/keyboard.h"
 #include "App/play.h"
 #include "App/solve.h"
@@ -68,7 +69,9 @@ int main(int argc, char **argv)
         ARX_ARM.getKey(key);
 
         ARX_ARM.get_joint();
-
+        // if(!ARX_ARM.is_starting){
+        //      cmd = ARX_ARM.get_cmd();
+        // }
         ARX_ARM.update_real(cmd);
     
 ////topic ////////////////////////////////////////////////////

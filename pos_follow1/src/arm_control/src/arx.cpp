@@ -7,6 +7,7 @@
 #include "Hardware/motor.h"
 #include "Hardware/teleop.h"
 #include "App/arm_control.h"
+// #include "App/arm_control.cpp"
 #include "App/keyboard.h"
 #include "App/play.h"
 #include "App/solve.h"
