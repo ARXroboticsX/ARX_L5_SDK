@@ -13,7 +13,6 @@ void gq_say();
 void my_GetRPY(float R[3][3], float rpy[3]);
 
 
-
 void get_dh_T(float a, float alpha, float d, float q, float R[4][4]);
 
 
@@ -39,17 +38,9 @@ void J_dot_P(float R[6][6], float P[6], float relt[6]);
 
 void R_trans(float R[3][3], float Rt[3][3]);
 
-
 void jcb_trans(float J[6][6], float Jt[6][6]);
 
-
-    
-
-
 void P_cros_P(float a[3], float b[3], float c[3]);
-
-// 计算两个4x4矩阵的点乘
-
 
 void J_dot_J(float matrixA[6][6], float matrixB[6][6], float result[6][6]) ;
 

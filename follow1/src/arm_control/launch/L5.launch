@@ -4,6 +4,6 @@
     <arg name="reconfigure" default="false" />
 
     <node if="$(arg reconfigure)" name="configure" pkg="rqt_reconfigure" type="rqt_reconfigure"> </node>
-    <node name="arm_node1" pkg="arm_control" type="arm_node1" respawn="true" output="screen"> </node>
+    <node name="arm_node2" pkg="arm_control" type="arm_node2" respawn="true" output="screen"> </node>
 
 </launch>

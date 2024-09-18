@@ -87,7 +87,7 @@ public:
 class arx_arm
 {
 public:
-    arx_arm(int CONTROL_MODE);
+    arx_arm(int CONTROL_MODE, float gripper);
     ~arx_arm()=default;
 
     float curent_joint[6] = {0};
@@ -100,6 +100,7 @@ public:
     unsigned int loop_rate = 200;
 
     float current_pos[7] = {0.0};
+    float q_init_tst[7] = {0.0, 1,1,0,0,0};
     float fk_end_pos[7]={0.0};
     float current_vel[7] = {0.0};
     float current_torque[7] = {0.0f};
@@ -112,8 +113,8 @@ public:
     float ros_control_vel[7] ={};
     float ros_control_cur[7] ={};
 
-    float lower_bound_waist[3] = {  0.0, -0.4, -0.4};
-    float upper_bound_waist[3] = {  0.4,  0.4,  0.4};
+    float lower_bound_waist[3] = {  0.0, -0.53, -0.53};
+    float upper_bound_waist[3] = {  0.53,  0.53,  0.53};
 
     float lower_bound_pitch = -1.35;
     float upper_bound_pitch = M_PI/2; 
@@ -132,7 +133,7 @@ public:
 
     void init_step();
     bool is_starting = true,is_arrived = false;
-    
+    bool is_joint_starting = true;
     
     float joy_x=0,joy_y=0,joy_z=0,joy_yaw=0,joy_pitch=0,joy_roll=0,joy_gripper=0;
     float joy_x_t=0,joy_y_t=0,joy_z_t=0,joy_yaw_t=0,joy_pitch_t=0,joy_roll_t=0,joy_gripper_t=0;
@@ -209,6 +210,8 @@ public:
     float dyn_force[6] = {0.0};
     float target_vel_temp[7] = {0.0f};
     float end_state[7] = {0.0f};
+    float end_state_laste[7] = {0.0f};
+    float end_state_inspher[7] = {0.0f};
     float joint[6] = {6};
     float back_end_angle[3] = {0};
     float back_end_ori[3] = {0};
@@ -226,6 +229,9 @@ public:
     // int temp_current_normal=0;
     int gripper_normal_t=0;
     // bool temp_condition=true;
+    void Gripper_init();
+    int gripper_flag=0,gripper_flag_t=0;
+
 
 private:
 

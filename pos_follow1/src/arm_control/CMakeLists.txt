@@ -66,8 +66,8 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm.*|arm|aarch64")
     # Link libraries for ARM architecture
     target_link_libraries(arm_node2 
         ${catkin_LIBRARIES} 
-         
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/arx_lib/libarxarm.so 
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/arx_lib/libarxarm.so  
+        # ${CMAKE_CURRENT_SOURCE_DIR}/src/App/libarmkey.so 
 
         
         # kdl_parser
@@ -76,8 +76,8 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "(x86_64)|(AMD64)|(^i686)")
     # Link libraries for x86 architecture
     target_link_libraries(arm_node2 
         ${catkin_LIBRARIES} 
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/arx_lib/libarxx86.so  
-
+         
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/arx_lib/libarxx86.so 
         # kdl_parser
     )
 endif()

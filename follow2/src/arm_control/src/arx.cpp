@@ -7,7 +7,6 @@
 #include "Hardware/motor.h"
 #include "Hardware/teleop.h"
 #include "App/arm_control.h"
-// #include "App/arm_control.cpp"
 #include "App/keyboard.h"
 #include "App/play.h"
 #include "App/solve.h"
@@ -35,52 +34,32 @@ int main(int argc, char **argv)
     ros::NodeHandle node;
     Teleop_Use()->teleop_init(node);
 
-    arx_arm ARX_ARM((int) CONTROL_MODE);
-
-////topic ////////////////////////////////////////////////////
-
-                ros::Subscriber sub_joint = node.subscribe<arm_control::JointControl>("joint_control2", 10, 
-                                            [&ARX_ARM](const arm_control::JointControl::ConstPtr& msg) {
-                                                ARX_ARM.ros_control_pos_t[0] = msg->joint_pos[0];
-                                                ARX_ARM.ros_control_pos_t[1] = msg->joint_pos[1];
-                                                ARX_ARM.ros_control_pos_t[2] = msg->joint_pos[2];
-                                                ARX_ARM.ros_control_pos_t[3] = msg->joint_pos[3];
-                                                ARX_ARM.ros_control_pos_t[4] = msg->joint_pos[4];
-                                                ARX_ARM.ros_control_pos_t[5] = msg->joint_pos[5];
-                                                ARX_ARM.ros_control_pos_t[6] = msg->joint_pos[6];
-                                                ARX_ARM.ros_control_spd_t[0] = msg->joint_vel[0];
-                                                ARX_ARM.ros_control_spd_t[1] = msg->joint_vel[1];
-                                                ARX_ARM.ros_control_spd_t[2] = msg->joint_vel[2];
-                                                ARX_ARM.ros_control_spd_t[3] = msg->joint_vel[3];
-                                                ARX_ARM.ros_control_spd_t[4] = msg->joint_vel[4];
-                                                ARX_ARM.ros_control_spd_t[5] = msg->joint_vel[5];
-                                                ARX_ARM.ros_control_spd_t[6] = msg->joint_vel[6];
+    arx_arm ARX_ARM((int) CONTROL_MODE, 0.0);
 
 
-                                            });
-
-                ros::Subscriber sub_pos = node.subscribe<arm_control::PosCmd>("master2_pos_back", 10, 
-                                            [&ARX_ARM](const arm_control::PosCmd::ConstPtr& msg) {
-                                                    ARX_ARM.arx5_cmd.x            = msg->x;
-                                                    ARX_ARM.arx5_cmd.y            = msg->y;
-                                                    ARX_ARM.arx5_cmd.z            = msg->z;
-                                                    ARX_ARM.arx5_cmd.waist_roll   = msg->roll;
-                                                    ARX_ARM.arx5_cmd.waist_pitch  = msg->pitch;
-                                                    ARX_ARM.arx5_cmd.waist_yaw    = msg->yaw;
-                                                    ARX_ARM.arx5_cmd.gripper      = msg-> gripper;
-
-                                            });
-
-
-                ros::Publisher pub_current = node.advertise<arm_control::JointInformation>("joint_information2", 10);
-                ros::Publisher pub_pos = node.advertise<arm_control::PosCmd>("/follow2_pos_back", 10);
-                
-
-////topic ////////////////////////////////////////////////////
+        ros::Subscriber sub_joint = node.subscribe<arm_control::JointControl>("joint_control2", 10, 
+                                    [&ARX_ARM](const arm_control::JointControl::ConstPtr& msg) {
+                                        ARX_ARM.ros_control_pos_t[0] = msg->joint_pos[0];
+                                        ARX_ARM.ros_control_pos_t[1] = msg->joint_pos[1];
+                                        ARX_ARM.ros_control_pos_t[2] = msg->joint_pos[2];
+                                        ARX_ARM.ros_control_pos_t[3] = msg->joint_pos[3];
+                                        ARX_ARM.ros_control_pos_t[4] = msg->joint_pos[4];
+                                        ARX_ARM.ros_control_pos_t[5] = msg->joint_pos[5];
+                                        ARX_ARM.ros_control_pos_t[6] = msg->joint_pos[6];
+                                        ARX_ARM.ros_control_spd_t[0] = msg->joint_vel[0];
+                                        ARX_ARM.ros_control_spd_t[1] = msg->joint_vel[1];
+                                        ARX_ARM.ros_control_spd_t[2] = msg->joint_vel[2];
+                                        ARX_ARM.ros_control_spd_t[3] = msg->joint_vel[3];
+                                        ARX_ARM.ros_control_spd_t[4] = msg->joint_vel[4];
+                                        ARX_ARM.ros_control_spd_t[5] = msg->joint_vel[5];
+                                        ARX_ARM.ros_control_spd_t[6] = msg->joint_vel[6];
 
 
+                                    });
 
-
+            ros::Publisher pub_current = node.advertise<arm_control::JointInformation>("joint_information2", 10);
+            ros::Publisher pub_pos = node.advertise<arm_control::PosCmd>("/follow2_pos_back", 10);
+            
     arx5_keyboard ARX_KEYBOARD;
 
     ros::Rate loop_rate(200);
@@ -96,10 +75,11 @@ int main(int argc, char **argv)
         ARX_ARM.getKey(key);
 
         ARX_ARM.get_joint();
-
+        if(!ARX_ARM.is_starting){
+             cmd = ARX_ARM.get_cmd();
+        }
         ARX_ARM.update_real(cmd);
     
-
 ////topic ////////////////////////////////////////////////////
                     //发送关节数据
                                 arm_control::JointInformation msg_joint;   
@@ -126,8 +106,6 @@ int main(int argc, char **argv)
                                 pub_pos.publish(msg_pos_back);      
 
 ////topic ////////////////////////////////////////////////////
-
-
 
 
         ros::spinOnce();
