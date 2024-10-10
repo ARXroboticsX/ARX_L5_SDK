@@ -27,6 +27,7 @@ command cmd;
 bool app_stopped = false;
 void sigint_handler(int sig);
 void safe_stop(can CAN_Handlej);
+bool ros_cmd = 1;
 
 int main(int argc, char **argv)
 {
@@ -39,9 +40,9 @@ int main(int argc, char **argv)
 
             ros::Subscriber sub_pos = node.subscribe<arm_control::PosCmd>("ARX_VR_R", 10, 
                                         [&ARX_ARM](const arm_control::PosCmd::ConstPtr& msg) {
-                                                ARX_ARM.arx5_cmd.x            = msg->x;
-                                                ARX_ARM.arx5_cmd.y            = msg->y;
-                                                ARX_ARM.arx5_cmd.z            = msg->z;
+                                                ARX_ARM.arx5_cmd.x_t            = msg->x;
+                                                ARX_ARM.arx5_cmd.y_t            = msg->y;
+                                                ARX_ARM.arx5_cmd.z_t            = msg->z;
                                                 ARX_ARM.arx5_cmd.waist_roll   = msg->roll;
                                                 ARX_ARM.arx5_cmd.waist_pitch  = msg->pitch;
                                                 ARX_ARM.arx5_cmd.waist_yaw    = msg->yaw;
@@ -68,6 +69,12 @@ int main(int argc, char **argv)
         ARX_ARM.getKey(key);
 
         ARX_ARM.get_joint();
+        if(ros_cmd)
+        {ARX_ARM.limit_cmd();}
+        else
+        {ARX_ARM.get_cmd();}
+        
+
         ARX_ARM.update_real(cmd);
     
 ////topic ////////////////////////////////////////////////////

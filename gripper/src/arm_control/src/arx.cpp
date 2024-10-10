@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     ros::NodeHandle node;
     Teleop_Use()->teleop_init(node);
 
-    arx_arm ARX_ARM((int) CONTROL_MODE, 0.0);//最后一个参数就是末端到电机6转子前端的距离
+    arx_arm ARX_ARM((int) CONTROL_MODE, 0.0);
 
 
         ros::Subscriber sub_pos1 = node.subscribe<arm_control::JointInformation>("joint_information", 10, 

@@ -36,7 +36,6 @@ int main(int argc, char **argv)
 
     arx_arm ARX_ARM((int) CONTROL_MODE, 0.0);
 
-
         ros::Subscriber sub_joint = node.subscribe<arm_control::JointControl>("joint_control2", 10, 
                                     [&ARX_ARM](const arm_control::JointControl::ConstPtr& msg) {
                                         ARX_ARM.ros_control_pos_t[0] = msg->joint_pos[0];

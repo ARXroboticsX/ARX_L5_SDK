@@ -163,6 +163,8 @@ public:
     std::string out_teach_path;
 
     command get_cmd();
+    command limit_cmd();
+
     command arx5_cmd;
     arx5roscmd arx5_ros_cmd;
 
